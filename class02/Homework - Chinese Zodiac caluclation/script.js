@@ -1,4 +1,4 @@
-let input = prompt
+let input = prompt("Please enter your birth year to see your Chinese Zodiac Sign: ");
 let birthYear = parseFloat(input);
 
 console.log(`The Birth year you entered is ${birthYear}`);
