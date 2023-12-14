@@ -1,1 +1,1 @@
-# Homeworks---JavaScript
+# Homeworks-JavaScript
