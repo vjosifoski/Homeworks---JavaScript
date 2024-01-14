@@ -12,19 +12,17 @@ let selectedOperator = "";
 let secondNumber = "";
 let enteringSecondNumber = false;
 let finalResult = "";
+let endResult = "";
 
 function calculate(num1, num2, operator) {
   num1 = parseFloat(num1);
   num2 = parseFloat(num2);
 
-  if (isNaN(num1) || isNaN(num2)) {
-    return "Error";
-  }
   if (operator === "/" && num2 === 0) {
     return "Cannot divide by zero";
   }
 
-  let result = "error";
+  let result = "";
   switch (operator) {
     case "+":
       result = num1 + num2;
@@ -54,7 +52,7 @@ for (let i = 0; i < numberButton.length; i++) {
         secondNumber += numberButton[i].value;
       }
     }
-    displayMemory.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+    decimalResult.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
   });
 }
 
@@ -68,15 +66,34 @@ decimalButton.addEventListener("click", function () {
       secondNumber += ".";
     }
   }
-  displayMemory.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+  decimalResult.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
 });
 
 for (let i = 0; i < operatorButtons.length; i++) {
   operatorButtons[i].addEventListener("click", function () {
-    console.log(operatorButtons[i].value);
+    if (firstNumber === "") {
+      return;
+    }
+    if (enteringSecondNumber && secondNumber !== "") {
+      let result = calculate(firstNumber, secondNumber, selectedOperator);
+      if (!isNaN(result)) {
+        firstNumber = result.toString();
+        secondNumber = "";
+        decimalResult.innerText = result;
+      } else {
+        decimalResult.innerText = "";
+        firstNumber = "";
+        secondNumber = "";
+      }
+    }
+
     selectedOperator = operatorButtons[i].value;
     enteringSecondNumber = true;
-    displayMemory.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+    if (firstNumber === "") {
+      firstNumber = displayMemory.innerText;
+    }
+    decimalResult.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+    displayMemory.innerText = `${firstNumber} ${secondNumber}`;
   });
 }
 
@@ -100,24 +117,22 @@ backspaceButton.addEventListener("click", function () {
       firstNumber = firstNumber.slice(0, -1);
     }
   }
-  displayMemory.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+  decimalResult.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
 });
 
 equalButton.addEventListener("click", function () {
-  console.log(firstNumber);
-  console.log(secondNumber);
   let result = calculate(firstNumber, secondNumber, selectedOperator);
   console.log(result);
 
   if (!isNaN(result)) {
-    firstNumber = result;
-    decimalResult.innerText = result;
+    firstNumber = endResult.toString();
+    displayMemory.innerText = result;
   } else {
-    decimalResult.innerText = result;
+    endResult = displayMemory.innerText = result;
   }
 
   finalResult = "";
   secondNumber = "";
   selectedOperator = "";
-  displayMemory.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
+  decimalResult.innerText = `${firstNumber} ${selectedOperator} ${secondNumber}`;
 });
