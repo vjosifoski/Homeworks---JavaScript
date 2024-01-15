@@ -50,8 +50,9 @@ function handleGuess(chosenLetter) {
       wrongGuesses[wrongGuesses.length] = chosenLetter;
     }
     document.getElementById("mylives").textContent = lives;
+    updateHangman(lives);
   }
-
+  document.getElementById(chosenLetter).disabled = true;
   updateGameState();
 }
 
@@ -82,6 +83,29 @@ function updateGameState() {
   }
 }
 
+function updateHangman(lives) {
+  switch (lives) {
+    case 5:
+      document.getElementById("head").style.display = "block";
+      break;
+    case 4:
+      document.getElementById("body").style.display = "block";
+      break;
+    case 3:
+      document.getElementById("leftArm").style.display = "block";
+      break;
+    case 2:
+      document.getElementById("rightArm").style.display = "block";
+      break;
+    case 1:
+      document.getElementById("leftLeg").style.display = "block";
+      break;
+    case 0:
+      document.getElementById("rightLeg").style.display = "block";
+      break;
+  }
+}
+
 function showHint() {
   document.getElementById("clue").innerHTML = "Clue - " + hints[hintIndex];
 }
@@ -96,7 +120,16 @@ function resetGame() {
   document.getElementById("clue").innerHTML = "Clue -";
   setupButtons();
   updateGameState();
+
+  document.getElementById("head").style.display = "none";
+  document.getElementById("body").style.display = "none";
+  document.getElementById("leftArm").style.display = "none";
+  document.getElementById("rightArm").style.display = "none";
+  document.getElementById("leftLeg").style.display = "none";
+  document.getElementById("rightLeg").style.display = "none";
 }
+
+resetGame();
 
 document.getElementById("hint").addEventListener("click", showHint);
 document.getElementById("reset").addEventListener("click", resetGame);
